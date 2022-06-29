@@ -18,7 +18,7 @@
         return pageno;
       
     }
-    const getPagination= ({pageno, pagesize,totalcount,blocksize=5})=>{
+    const getPagination= (pageno, pagesize,totalcount,blocksize=5 )=>{
       const countOfpage = Math.ceil(totalcount/pagesize);
       const prev = Math.floor((pageno-1)/blocksize)*blocksize;
       const start = prev +1;
@@ -28,25 +28,24 @@
       if(end>=countOfpage){
         end = countOfpage
         next = 0;
-        
+        return {pageno,prev,start,end,next}
       }
-      return {pageno,prev,start,end,next}
+     
       
     }
 
     const printPagination = async ({pageno,prev,start,end,next})=>{
       const $ul = $('#page .pagination')
-      const url = '/list2.html?pageno='
+      const $url = '/list%20copy.html?pageno='
       if(prev>0){
         const $li = $('<li class="page-item">').appendTo($ul)
-          $(`<a class="page-link" href="${url}${prev}">`).text("이전").appendTo($li)
+          $(`<a class="page-link" href="#">`).text("이전").appendTo($li)
       }
 
-      console.log(start, end);
-     for(let i=start; i<=end; i++){
+     for(let i=start; end>=i; i++){
       
         const $li = $('<li class="page-item">').appendTo($ul);
-          $(`<a class="page-link" href="${url}${i}">`).text(i).appendTo($li)
+          $(`<a class="page-link" href="#">`).text(i).appendTo($li)
 
             if(i===pageno){
               $li.addClass('active');
@@ -55,7 +54,7 @@
 
      if(next>0){
         const $li = $('<li class="page-item">').appendTo($ul);
-          $(`<a class="page-link" href="${url}${next}">`).text("다음").appendTo($li)
+          $(`<a class="page-link" href="#">`).text("다음").appendTo($li)
 
      }
 
@@ -124,7 +123,7 @@
 
       </tbody>
     </table>
-    <ul class="pagination" style="display:flex; justify-content: center;">
+    <ul class="pagination">
 
     </ul>
   </div>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>리스트 페이지</title>
+    <script>
+
+        function getpage(){
+            
+            let page = parseInt(location.search.substr(6));
+            //만일 숫자변환에 실패하면 NaN
+            if(isNaN(page)==true)
+            return 1
+            return page
+        }
+
+        async function getResponse(api, page, pagesize){
+            const params = {page,pagesize};
+            return await $.ajax({
+                url : api,
+                data : params
+            })
+            
+        }
+       $(document).ready(async function(){
+        const pagesize= 10;
+        const api = 'http://sample.bmaster.kro.kr/contacts'
+        const page = getpage();
+        const response = await getResponse(api, page, pagesize);
+        //printContacts(response);
+        console.log(response);
+        //const pagination = getpagination(response);
+        //printPagination(pagination);
+       })
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

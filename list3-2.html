@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>리스트 페이지</title>
+    <script>
+
+        function getpage(){
+            
+            let page = parseInt(location.search.substr(6));
+            //만일 숫자변환에 실패하면 NaN
+            if(isNaN(page)==true)
+            return 1
+            return page
+        }
+
+        async function getResponse(api, pageno, pagesize){
+            const params = {pageno, pagesize};
+            console.log(params)
+            return await $.ajax({
+                url : api,
+                data : params
+            })
+            
+            
+        }
+
+        function printContacts({contacts}){
+           const $list = $('#list');
+           for(c of contacts){
+            $('<tr>').appendTo($list);
+                const $tr = $('<tr>').appendTo($list);
+                    $('<td>').text(c.no).appendTo($tr);
+                    const $td = $('<td>').appendTo($tr);
+                        $('<a>').attr('href',`/read.html?no=${c.no}`).text(c.name).appendTo($tr);
+                    $('<td>').text(c.address).appendTo($tr);
+                    $('<td>').text(c.tel).appendTo($tr);
+
+           }
+        }
+       $(document).ready(async function(){
+        const pagesize= 10;
+        const api = 'http://sample.bmaster.kro.kr/contacts'
+        const page = getpage();
+        const response = await getResponse(api, page, pagesize);
+        printContacts(response);
+        console.log(response);
+        //const pagination = getpagination(response);
+        //printPagination(pagination);
+       })
+    </script>
+</head>
+<body>
+    <div id="app">
+        <table>
+            <thead>
+                <tr><td>번호</td><td>이름</td><td>주소</td><td>연락처</td></tr>
+            </thead>
+            <tbody id="list">
+
+            </tbody>
+        </table>
+
+    </div>
+
+</body>
+</html>
